@@ -6,8 +6,11 @@
 #define TRUE 1
 #define FALSE 0
 
-int prag_source = TRUE;
-int prag_token = TRUE;
+int prag_source;
+int prag_token;
+int prag_parse;
+int prag_tag;
+int system_flag;
 
 //char array for lead line
 char** tokens;
@@ -32,10 +35,13 @@ void PushToken(char* _type, char* _text)
 }
 void PrintLine(int _idx)
 {
-	printf("Line %d : ", _idx);
+	if ( prag_source == TRUE )
+		printf("Line %d : ", _idx);
 	for (int i = 0; i < lineLen; i++)
-		printf("%s ", tokens[i]);
-	printf("\n");
+		if( prag_source == TRUE )
+			printf("%s ", tokens[i]);
+	if( prag_source == TRUE )
+		printf("\n");
 	for (int i = 0; i < lineLen; i++)
 		free(tokens[i]);
 	//tokens = realloc(tokens, sizeof(char*) * 1);
@@ -62,6 +68,12 @@ void PrintLine(int _idx)
 "#pragma token off"	{ prag_token = 0; }
 "#pragma source on"	{ prag_source = 1; }
 "#pragma source off"	{ prag_source = 0; }
+"#pragma parsing on"	{ prag_parse = 1; }
+"#pragma parsing off"	{ prag_parse = 0; }
+"#pragma tag on"	{ prag_tag = 1; }
+"#pragma tag off"	{ prag_tag = 0; }
+"#system on"		{ system_flag = 1; }
+"#system off"		{ system_flag = 0; }
 
 (for)	{ PushToken("KEY", yytext); /*return FOR;*/ }
 (do)	{ PushToken("KEY", yytext); /*return DO;*/ }
@@ -120,16 +132,16 @@ void PrintLine(int _idx)
 
 :	{ PushToken("PUNC", yytext); return ':'; }
 ;	{ PushToken("PUNC", yytext); return ';'; }
-,	{ return ','; }
+,	{ PushToken("PUNC", yytext); return ','; }
 \.	{ return '.'; }
-"["	{ return '['; }
+"["	{ PushToken("PUNC", yytext); return '['; }
 "]"	{ return ']'; }
 "("	{ return '('; }
 ")"	{ return ')'; }
 "{"	{ return '{'; }
 "}"	{ return '}'; }
 
-\t {}
+\t {;}
 \n { PrintLine(lineNo); lineNo++; }
 
 %%

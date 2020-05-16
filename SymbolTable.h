@@ -14,8 +14,11 @@
 #define INT_TYPE 0
 #define DOUBLE_TYPE 1
 #define CHAR_TYPE 2 
+#define FLOAT_TYPE 3
 
-typedef struct Node
+typedef char* string;
+
+typedef struct _Node
 {
 	char name[MAXTOKENLEN];
 	int type;
@@ -24,14 +27,14 @@ typedef struct Node
 	double doubleVal;
 	char charVal;
 
-	struct Node* next;
-};
+	struct _Node* next;
+} * Node;
 
-static struct Node* Table;
+static Node Table;
 
-void Insert(int type, char* name, int lineNo)
+void Insert(int type, string name, int lineNo)
 {
-	struct Node* temp;
+	Node temp;
 	temp = Table;
 	while (temp->next != NULL)
 	{
@@ -39,21 +42,18 @@ void Insert(int type, char* name, int lineNo)
 			return;
 		temp = temp->next;	
 	}
-	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node*));
-	printf("defined new var %s \n", name);
+	Node newNode = (Node)malloc(sizeof(Node));
 	strcpy(newNode->name, name);
 	newNode->type = type;
 	newNode->next = NULL;
 	temp->next = newNode;
 }
 
-struct Node* GetNode(char* name)
+Node GetNode(string name)
 {
-	struct Node* temp = Table->next;
-	printf("first %s \n", temp->name);
+	Node temp = Table->next;
 	while ((strcmp(name, temp->name) != 0))
 	{
-		printf("get var %s \n", temp->name);
 		temp = temp->next;
 		if (temp == NULL)
 			return NULL;
@@ -62,9 +62,9 @@ struct Node* GetNode(char* name)
 }
 
 //return value of symbol(name)
-int GetValue(char* name)
+int GetValue(string name)
 {
-	struct Node* temp = Table->next;
+	Node temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{
@@ -76,9 +76,9 @@ int GetValue(char* name)
 	return temp->intVal;
 }
 //set value(v) of symbol(name)
-int SetValue(char* name, int v)
+int SetValue(string name, int v)
 {
-	struct Node* temp = Table->next;
+	Node temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{
@@ -90,10 +90,31 @@ int SetValue(char* name, int v)
 	temp->intVal = v;
 	return 0;
 }
-//get data type
-int GetType(char* name)
+
+void PrintType(int _type)
 {
-	struct Node* temp = Table->next;
+	switch(_type)
+	{
+		case INT_TYPE:
+			printf("int");
+			break;
+		case DOUBLE_TYPE:
+			printf("double");
+			break;
+		case FLOAT_TYPE:
+			printf("float");
+			break;
+		case CHAR_TYPE:
+			printf("char");
+			break;
+		default:
+			break;
+	}
+}
+//get data type
+int GetType(string name)
+{
+	Node temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{
@@ -105,9 +126,9 @@ int GetType(char* name)
 	return temp->type;
 }
 //set data type(t)
-int SetType(char* name, int t)
+int SetType(string name, int t)
 {
-	struct Node* temp = Table->next;
+	Node temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{
