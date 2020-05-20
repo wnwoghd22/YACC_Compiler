@@ -72,9 +72,14 @@ extern int yydebug;
     OR = 282,
     BAND = 283,
     BOR = 284,
-    UMINUS = 285,
-    INC = 286,
-    DEC = 287
+    IF = 285,
+    ELSE = 286,
+    SWITCH = 287,
+    CASE = 288,
+    DEFAULT = 289,
+    UMINUS = 290,
+    INC = 291,
+    DEC = 292
   };
 #endif
 /* Tokens.  */
@@ -105,24 +110,31 @@ extern int yydebug;
 #define OR 282
 #define BAND 283
 #define BOR 284
-#define UMINUS 285
-#define INC 286
-#define DEC 287
+#define IF 285
+#define ELSE 286
+#define SWITCH 287
+#define CASE 288
+#define DEFAULT 289
+#define UMINUS 290
+#define INC 291
+#define DEC 292
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 22 "parser.y" /* yacc.c:1909  */
+#line 25 "parser.y" /* yacc.c:1909  */
 
 	int intVal;
 	double doubleVal;
 	char charVal;
 	char* stringVal;
+
+	struct _TreeNode* _node;
 	//struct symbol *sym;
 
-#line 126 "y.tab.h" /* yacc.c:1909  */
+#line 138 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -28,13 +28,52 @@ typedef struct _Node
 	char charVal;
 
 	struct _Node* next;
-} * Node;
+} Node;
 
-static Node Table;
+typedef struct _TreeNode
+{
+	char value[MAXTOKENLEN];
+	int intVal;
+	
+	struct _TreeNode* right;
+	struct _TreeNode* left;
+} TreeNode;
+
+static TreeNode* Expression;
+
+void PrintTag(TreeNode* _node)
+{
+	printf("<expr>");
+	if(_node->value[0] == '(')
+		printf("(");
+
+	if(_node->left != NULL)
+		PrintTag(_node->left);
+
+	if(_node->value[0] != '(')
+	{
+		if(_node->value[0] != '\0')
+			printf(_node->value);
+		else
+			printf("%d", _node->intVal);
+	}
+
+	if(_node->right != NULL)
+		PrintTag(_node->right);
+
+	if(_node->value[0] == ')')
+		printf(")");
+	
+	printf("</expr>");
+
+	//free(_node);
+}
+
+static Node* Table;
 
 void Insert(int type, string name, int lineNo)
 {
-	Node temp;
+	Node* temp;
 	temp = Table;
 	while (temp->next != NULL)
 	{
@@ -42,16 +81,16 @@ void Insert(int type, string name, int lineNo)
 			return;
 		temp = temp->next;	
 	}
-	Node newNode = (Node)malloc(sizeof(Node));
+	Node* newNode = (Node*)malloc(sizeof(Node));
 	strcpy(newNode->name, name);
 	newNode->type = type;
 	newNode->next = NULL;
 	temp->next = newNode;
 }
 
-Node GetNode(string name)
+Node* GetNode(string name)
 {
-	Node temp = Table->next;
+	Node* temp = Table->next;
 	while ((strcmp(name, temp->name) != 0))
 	{
 		temp = temp->next;
@@ -64,7 +103,7 @@ Node GetNode(string name)
 //return value of symbol(name)
 int GetValue(string name)
 {
-	Node temp = Table->next;
+	Node* temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{
@@ -78,7 +117,7 @@ int GetValue(string name)
 //set value(v) of symbol(name)
 int SetValue(string name, int v)
 {
-	Node temp = Table->next;
+	Node* temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{
@@ -114,7 +153,7 @@ void PrintType(int _type)
 //get data type
 int GetType(string name)
 {
-	Node temp = Table->next;
+	Node* temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{
@@ -128,7 +167,7 @@ int GetType(string name)
 //set data type(t)
 int SetType(string name, int t)
 {
-	Node temp = Table->next;
+	Node* temp = Table->next;
 
 	while ((strcmp(name, temp->name) != 0))
 	{

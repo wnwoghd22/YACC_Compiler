@@ -75,19 +75,19 @@ void PrintLine(int _idx)
 "#system on"		{ system_flag = 1; }
 "#system off"		{ system_flag = 0; }
 
-(for)	{ PushToken("KEY", yytext); /*return FOR;*/ }
-(do)	{ PushToken("KEY", yytext); /*return DO;*/ }
-(while)	{ /*return WHILE;*/ }
-(break)	{ /*return BREAK;*/ }
-(continue) { /*return CONTINUE;*/ }
-(if)	{ /*return IF;*/ }
-(else)	{ /*return ELSE;*/ }
-(return) { /*return RETURN;*/ }
-(struct) { /*return STRUCT;*/ }
-(switch) { /*return SWITCH;*/ }
-(case)	{ /*return CASE;*/ }
-(default) { /*return DEFAULT;*/ }
-(void)	{ /*return VOID;*/ }
+(for)	{ PushToken("KEY", yytext); return FOR; }
+(do)	{ PushToken("KEY", yytext); return DO; }
+(while)	{ return WHILE; }
+(break)	{ return BREAK; }
+(continue) { return CONTINUE; }
+(if)	{ return IF; }
+(else)	{ return ELSE; }
+(return) { return RETURN; }
+(struct) { return STRUCT; }
+(switch) { return SWITCH; }
+(case)	{ return CASE; }
+(default) { return DEFAULT; }
+(void)	{ return VOID; }
 (int)	{ PushToken("KEY", yytext); return INT; }
 (double) { PushToken("KEY", yytext); return DOUBLE; }
 (float) { PushToken("KEY", yytext); return FLOAT; }
