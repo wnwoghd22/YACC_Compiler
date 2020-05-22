@@ -53,7 +53,7 @@ void PrintTag(TreeNode* _node)
 	if(_node->value[0] != '(')
 	{
 		if(_node->value[0] != '\0')
-			printf(_node->value);
+			printf("%s", _node->value);
 		else
 			printf("%d", _node->intVal);
 	}
@@ -66,7 +66,7 @@ void PrintTag(TreeNode* _node)
 	
 	printf("</expr>");
 
-	//free(_node);
+	free(_node);
 }
 
 static Node* Table;
@@ -179,4 +179,28 @@ int SetType(string name, int t)
 	temp->type = t;
 	return 0;
 }
+
+typedef struct _parameter
+{
+	int type;
+	char name[MAXTOKENLEN];
+	struct _parameter* next;
+} Parameter;
+
+void PrintParameter(Parameter* _par)
+{
+	Parameter* temp = _par;
+	while(temp != NULL)
+	{
+		PrintType(temp->type);
+		printf("%s", temp->name);
+
+		temp = temp->next;
+		if(temp != NULL)
+			printf(",");
+	}
+}
+
+static Parameter* parameter;
+
 #endif

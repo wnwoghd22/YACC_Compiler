@@ -75,6 +75,21 @@ void PrintLine(int _idx)
 "#system on"		{ system_flag = 1; }
 "#system off"		{ system_flag = 0; }
 
+<<<<<<< HEAD
+(for)	{ PushToken("KEY", yytext); /*return FOR;*/ }
+(do)	{ PushToken("KEY", yytext); /*return DO;*/ }
+(while)	{ PushToken("KEY", yytext); /*return WHILE;*/ }
+(break)	{ PushToken("KEY", yytext); /*return BREAK;*/ }
+(continue) { PushToken("KEY", yytext); /*return CONTINUE;*/ }
+(if)	{ PushToken("KEY", yytext); return IF; }
+(else)	{ PushToken("KEY", yytext); return ELSE; }
+(return) { PushToken("KEY", yytext); return RETURN; }
+(struct) { PushToken("KEY", yytext); return STRUCT; }
+(switch) { PushToken("KEY", yytext); return SWITCH; }
+(case)	{ PushToken("KEY", yytext); return CASE; }
+(default) { PushToken("KEY", yytext); return DEFAULT; }
+(void)	{ PushToken("KEY", yytext); return VOID; }
+=======
 (for)	{ PushToken("KEY", yytext); return FOR; }
 (do)	{ PushToken("KEY", yytext); return DO; }
 (while)	{ return WHILE; }
@@ -88,11 +103,13 @@ void PrintLine(int _idx)
 (case)	{ return CASE; }
 (default) { return DEFAULT; }
 (void)	{ return VOID; }
+>>>>>>> fe216a5f13facfee77c247dbe07cbdd515fc3f5e
 (int)	{ PushToken("KEY", yytext); return INT; }
 (double) { PushToken("KEY", yytext); return DOUBLE; }
 (float) { PushToken("KEY", yytext); return FLOAT; }
 (char)	{ PushToken("KEY", yytext); return CHAR; }
-(const)|(NULL)|(fclose)|(clearerr)|(feof)|(ferror)|(fflush)|(fgetpos)|(fopen)|(fread)|(freopen)|(fseek)|(fsetpos)|(ftell)|(fwrite)|(remove)|(rename)|(rewind)|(setbuf)|(setvbuf)|(tmpfile)|(tmpnam)|(fprintf)|(printf)|(sprintf)|(vfprintf)|(vprintf)|(vsprintf)|(fscanf)|(scanf)|(sscanf)|(fgetc)|(fgets)|(fputc)|(fputs)|(getc)|(getchar)|(gets)|(putc)|(putchar)|(puts)|(ungetc)|(perror) { return KEY; }
+(const)	{ PushToken("KEY", yytext); return CONST; }
+(NULL)|(fclose)|(clearerr)|(feof)|(ferror)|(fflush)|(fgetpos)|(fopen)|(fread)|(freopen)|(fseek)|(fsetpos)|(ftell)|(fwrite)|(remove)|(rename)|(rewind)|(setbuf)|(setvbuf)|(tmpfile)|(tmpnam)|(fprintf)|(printf)|(sprintf)|(vfprintf)|(vprintf)|(vsprintf)|(fscanf)|(scanf)|(sscanf)|(fgetc)|(fgets)|(fputc)|(fputs)|(getc)|(getchar)|(gets)|(putc)|(putchar)|(puts)|(ungetc)|(perror) { return KEY; }
 
 \".*\"	{ PushToken("STRING", yytext);
 	yylval.stringVal = strdup(yytext);
@@ -110,7 +127,7 @@ void PrintLine(int _idx)
 
 (\+\+)	{ PushToken("OP", yytext); return INC; }
 (\-\-)	{ return DEC; }
-!	{ return NOT; }
+!	{ return '!'; }
 (==)	{ return EQ; }
 (!=)	{ return NQ; }
 (<=)	{ return GQ; }
